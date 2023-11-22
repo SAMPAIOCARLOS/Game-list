@@ -1,32 +1,32 @@
-const buscar = document.getElementById('buscar')
-const mySelect = document.getElementById('myselect')
+const myselect = document.getElementById('myselect')
 
-buscar.addEventListener('click', ()=> {
+async function exibirResultados() {
+    const response = await fetch('data.json');
+    const data = await response.json();
 
-    fetch('data.json').then((response)=> {
-        response.json()
-        .then((data)=> {
+    const valorSelect = myselect.value
 
-            let Imagem = document.getElementById("Imagem")
+    for (let i = 0; i < data.length; i++) {
+        const element = data[i];
 
-            const nome = document.getElementById('nome')
-            const nivel = document.getElementById('nivel')
-            const classe = document.getElementById('classe')
-            const raca = document.getElementById('raca')
+        const imagem = document.getElementById('Imagem');
 
-            for (let i = 0; i < data.length; i++) {
-                const item = data[i]
+        const nome = document.getElementById('nome');
+        const nivel = document.getElementById('nivel');
+        const classe = document.getElementById('classe');
+        const raca = document.getElementById('raca');
 
-                let valorSelect = mySelect.value
-                if(valorSelect === item.nome) {
-                    Imagem.setAttribute('src', item.url)
-                    nome.innerText = item.nome
-                    nivel.innerText = item.nivel
-                    classe.innerText = item.classe
-                    raca.innerText = item.raca
-                    
-                }      
-            }
-        })
-    })
-})
+
+        if(valorSelect === element.nome) {
+            imagem.setAttribute('src', element.url);
+
+            nome.innerText = element.nome
+            nivel.innerText = element.nivel
+            classe.innerText = element.classe
+            raca.innerText = element.raca
+        }
+        
+    }
+}
+
+myselect.addEventListener('change', exibirResultados)
